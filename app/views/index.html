@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Phalcon PHP Framework</title>
+    </head>
+    <body>
+        {% block outside_container_top %}
+        {% endblock %}
+        <div class=container>
+            {% block inside_container_top %}
+            {% endblock %}
+            <div class=row>
+                {% block inside_row_top %}
+                {% endblock %}
+                <div class=col-md-12>
+                    {% block above_content %}
+                    {% endblock %}
+                    <p>HOME</p>
+                    {% block content %}
+                    {% endblock %}
+                    {% block below_content %}
+                    {% endblock %}
+                </div>
+                {% block inside_row_bottom %}
+                {% endblock %}
+            </div>
+            {% block inside_container_bottom %}
+            {% endblock %}
+        </div>
+        {% block outside_container_bottom %}
+        {% endblock %}
+    </body>
+</html>

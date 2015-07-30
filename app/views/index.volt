@@ -12,6 +12,7 @@
             <div class=row>
                 <div class=col-md-12>
                     <p>HOME</p>
+                    {{ ctrl }}
                     {{ content() }}
                 </div>
             </div>

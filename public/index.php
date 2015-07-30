@@ -5,6 +5,10 @@ error_reporting(E_ALL);
 define('APP_PATH', realpath('..'));
 define('HTML_EOL','<br />');
 
+if(!file_exists($_SERVER['REQUEST_URI'])){
+    $_GET['_url'] = $_SERVER['REQUEST_URI'];
+}
+
 try {
 
     /**

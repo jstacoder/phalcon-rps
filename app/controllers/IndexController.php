@@ -5,10 +5,12 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
-        //$this->view->setContent(print_r(get_class_methods($this->view)));
+        parent::setLinks();
+        parent::setActive('home');
+        $this->view->navlinks = parent::getLinks();
         //$this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_MAIN_LAYOUT);
         $this->view->setTemplateAfter('common');
+        $this->view->ctrl = $this->dispatcher->getControllerName();
     }
-
 }
 

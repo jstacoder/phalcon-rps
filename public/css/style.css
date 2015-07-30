@@ -5,6 +5,24 @@ ul.navbar li {
     margin-right:5%;
     float:right;
     border-radius:10px;
+    cursor:pointer;
+}
+ul.navbar li.active {    
+    background-color:grey;
+}
+ul.navbar li.active a {
+    color:white;
+}
+
+ul.navbar li.active:hover {    
+}
+ul.navbar li.active:hover a {    
+}
+ul.navbar li:not(.active):hover{
+    background-color:grey;
+}
+ul.navbar li:hover a {
+    color:white;
 }
 .navbar {
     margin-top:5%;

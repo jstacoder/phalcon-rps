@@ -12,11 +12,35 @@ use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
+use Phalcon\Flash\Direct as Flash;
+use Phalcon\Flash\Session as FlashSession;
 
 /**
  * The FactoryDefault Dependency Injector automatically register the right services providing a full stack framework
  */
 $di = new FactoryDefault();
+
+$classes = array(
+            "error"=>"alert alert-danger",
+            "success"=>"alert alert-success",
+            "notice"=>"alert alert-info",
+            "warning"=>"alert alert-warning"
+);
+
+$di->set('flash',function() use ($classes){
+   $flash = new Flash(
+        $classes
+    );
+   return $flash;
+});
+$di->set('flashsession',function() use ($classes){
+   $flash = new FlashSession(
+        $classes
+    );
+   return $flash;
+});
+
+
 
 /**
  * The URL component is used to generate all kind of urls in the application

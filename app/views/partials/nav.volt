@@ -1,11 +1,16 @@
 <ul class="navbar" style="border:1px solid red;">
     {% if navlinks %}
-        {% for link in navlinks %}
-            <li{% if link.active %} class=active{% endif %}>
-                <a href="{{ link.href }}">
-                    {{ link.text }}
+        {% for idx in [3,2,1] %}
+            {% for link in navlinks %}
+                {% if link.order == idx %}
+                    {% set currLink = link %}
+                {% endif %}
+            {% endfor %}
+            <li{% if currLink.active %} class=active{% endif %}>
+                <a href="{{ currLink.href }}">
+                    {{ currLink.text }}
                 </a>
-            </li>
+            </li>            
         {% endfor %}
     {% else %}
         <li>item1</li>

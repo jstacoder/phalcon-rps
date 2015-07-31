@@ -5,5 +5,6 @@ class ScoresController extends ControllerBase {
         parent::setActive('scores');
         $this->view->navlinks = parent::getLinks();
         $this->view->setTemplateAfter('common');
+        $this->view->page_header = 'High Scores';
     }
 }

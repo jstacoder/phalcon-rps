@@ -11,8 +11,7 @@
             {{ partial('partials/nav') }}
             <div class=row>
                 <div class=col-md-12>
-                    <p>HOME</p>
-                    {{ ctrl }}
+                    {{ partial("partials/header",{"page_header":page_header | default("TESTING")}) }}
                     {{ content() }}
                 </div>
             </div>

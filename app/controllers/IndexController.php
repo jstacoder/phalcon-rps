@@ -9,8 +9,6 @@ class IndexController extends ControllerBase
         parent::setActive('home');
         $this->view->navlinks = parent::getLinks();
         //$this->view->disableLevel(\Phalcon\Mvc\View::LEVEL_MAIN_LAYOUT);
-        $this->view->setTemplateAfter('common');
-        $this->view->ctrl = $this->dispatcher->getControllerName();
+        //$this->view->setTemplateAfter('common');
     }
 }
-

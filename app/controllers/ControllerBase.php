@@ -6,14 +6,16 @@ class NavLink {
     private $_text;
     private $_href;
     private $_active;
+    private $_order;
+    private static $_count = 0;
 
     public function __get($attr){
-        if(in_array($attr,['text','href','active'])){
+        if(in_array($attr,['text','href','active','order'])){
             return $this->{"_$attr"};
         }
     }
     public function __set($attr,$val){
-        if(in_array($attr,['text','href','active'])){
+        if(in_array($attr,['text','href','active','order'])){
             $this->{"_$attr"} = $val;
         }
     }
@@ -21,6 +23,8 @@ class NavLink {
         $this->href = is_null($link) ? "/$text" : $link;
         $this->text = $text;
         $this->active = $active;
+        static::$_count = self::$_count = self::$_count + 1;
+        $this->order = static::$_count;
     }
     public function __invoke($active=null){
         $this->active = is_null($active) ? $this->active : $active;

@@ -42,7 +42,7 @@ class User extends BaseModel
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = $this->getDI()->getShared('security')->hash($password);
 
         return $this;
     }
@@ -129,6 +129,9 @@ class User extends BaseModel
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
+    }
+    public function check_pw($pw){
+        return $this->getDI()->getShared('security')->checkHash($this->password,$pw);
     }
 
 }

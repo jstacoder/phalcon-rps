@@ -52,30 +52,30 @@ $di->set('url', function () use ($config) {
     return $url;
 }, true);
 
+
+$volt_engine = function ($view, $di) use ($config) {
+
+    $volt = new VoltEngine($view, $di);
+
+    $volt->setOptions(array(
+        'compiledPath' => $config->application->cacheDir,
+        'compiledSeparator' => '_'
+    ));
+    return $volt;
+};
+
+
 /**
  * Setting up the view component
  */
-$di->setShared('view', function () use ($config) {
-
+$di->setShared('view', function () use ($config,$volt_engine,$di) {
     $view = new View();
-
     $view->setViewsDir($config->application->viewsDir);
-
+    $volt = $volt_engine($view,$di);
     $view->registerEngines(array(
-        '.volt' => function ($view, $di) use ($config) {
-
-            $volt = new VoltEngine($view, $di);
-
-            $volt->setOptions(array(
-                'compiledPath' => $config->application->cacheDir,
-                'compiledSeparator' => '_'
+                '.volt' => $volt,
+                '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
             ));
-
-            return $volt;
-        },
-        '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
-    ));
-
     return $view;
 });
 
@@ -102,3 +102,6 @@ $di->setShared('session', function () {
 
     return $session;
 });
+
+
+return $di;

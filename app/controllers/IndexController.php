@@ -5,6 +5,7 @@ class IndexController extends ControllerBase
 
     public function indexAction()
     {
+        parent::initalize();
         parent::setLinks();
         parent::setActive('home');
         $this->view->navlinks = parent::getLinks();

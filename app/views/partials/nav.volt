@@ -17,4 +17,7 @@
         <li>item2</li>
         <li>item3</li>
     {% endif %}
+    {% if current_player %}
+        <li>{{ current_player }}</li>
+    {% endif %}
 </ul>

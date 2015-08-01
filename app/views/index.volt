@@ -12,9 +12,26 @@
             <div class=row>
                 <div class=col-md-12>
                     {{ partial("partials/header",{"page_header":page_header | default("TESTING")}) }}
+                    {{ flashsession.output() }}
                     {{ content() }}
                 </div>
             </div>
         </div>
+<script>
+    function getAlert(){
+        var alerts = document.querySelectorAll('.alert');
+        return alerts.length ? alerts[0] : false;
+    }
+    function killAlert(){
+        var alert = getAlert();
+        alert && alert.remove();
+    }
+    function checkAndKill(){
+        if(getAlert()){
+            killAlert();
+        }
+    }
+    setInterval(killAlert,4000);
+</script>
     </body>
 </html>

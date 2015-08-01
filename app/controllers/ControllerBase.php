@@ -36,6 +36,11 @@ class ControllerBase extends Controller
 {
     public static $_links = array();
 
+    public function initalize(){
+        if($this->session->has('current_player')){
+            $this->view->current_player = $this->session->current_player;
+        }
+    }
 
     public static function setLinks(){
         $links = array(array('text'=>'home','url'=>'/'),array('text'=>'menu','url'=>'/menu'),array('text'=>'scores','url'=>'/scores'));

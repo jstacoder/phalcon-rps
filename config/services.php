@@ -21,7 +21,7 @@ $di->setShared('view', function () use ($config) {
     $view->setViewsDir($config->application->viewsDir);
     $view->registerEngines(
         array(
-            ".volt"=> new Engine(),
+            ".volt"=> 'Phalcon\Mvc\View\Engine\Volt',
             ".phtml"=> 'Phalcon\Mvc\View\Engine\Php'
         )
     );

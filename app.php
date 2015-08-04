@@ -8,7 +8,7 @@
  * Add your routes here
  */
 $app->get('/', function () use ($app) {
-    echo $app['view']->render('index');
+    echo $app['view']->render('index.volt');
 });
 
 /**

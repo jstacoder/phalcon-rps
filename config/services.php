@@ -6,6 +6,7 @@
  */
 
 use Phalcon\Mvc\View\Simple as View;
+use Phalcon\Mvc\View\Engine\Volt as Engine;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
@@ -18,6 +19,12 @@ $di = new FactoryDefault();
 $di->setShared('view', function () use ($config) {
     $view = new View();
     $view->setViewsDir($config->application->viewsDir);
+    $view->registerEngines(
+        array(
+            ".volt"=> new Engine(),
+            ".phtml"=> 'Phalcon\Mvc\View\Engine\Php'
+        )
+    );
     return $view;
 });
 

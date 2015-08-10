@@ -26,7 +26,7 @@ $cfg = array(
         'username'   => 'rps2',
         'password'   => 'rps2',
         'dbname'     => 'rps2',
-        'charset'    => 'utf8',
+        'charset'    => 'utf-8',
 );
 
 if(isset($_SERVER['CLEARDB_DATABASE_URL'])){

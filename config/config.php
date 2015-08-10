@@ -5,7 +5,7 @@ defined('APP_PATH') || define('APP_PATH', realpath('.'));
 function get_data_array($url){
     $result = array(
         'adapter'=>'Mysql',
-        'charset'=>'utf-8'
+        'charset'=>'utf8'
     );
     $url = explode('mysql://',$url)[1];
     $auth = explode('@',$url)[0];
@@ -26,7 +26,7 @@ $cfg = array(
         'username'   => 'rps2',
         'password'   => 'rps2',
         'dbname'     => 'rps2',
-        'charset'    => 'utf-8',
+        'charset'    => 'utf8'
 );
 
 if(isset($_SERVER['CLEARDB_DATABASE_URL'])){

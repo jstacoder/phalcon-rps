@@ -7,9 +7,9 @@ return new \Phalcon\Config(array(
     'database' => array(
         'adapter'    => 'Mysql',
         'host'       => 'localhost',
-        'username'   => 'root',
-        'password'   => '',
-        'dbname'     => 'test',
+        'username'   => 'rps2',
+        'password'   => 'rps2',
+        'dbname'     => 'rps2',
         'charset'    => 'utf8',
     ),
 
@@ -17,6 +17,6 @@ return new \Phalcon\Config(array(
         'modelsDir'      => APP_PATH . '/models/',
         'migrationsDir'  => APP_PATH . '/migrations/',
         'viewsDir'       => APP_PATH . '/views/',
-        'baseUri'        => '/phalcon-rps/',
+        'baseUri'        => '/',
     )
 ));

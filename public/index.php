@@ -1,4 +1,7 @@
 <?php
+if(!file_exists($_SERVER['REQUEST_URI'])){
+    $_GET['_url'] = $_SERVER['REQUEST_URI'];
+}
 
 use Phalcon\Mvc\Micro;
 

@@ -4,6 +4,13 @@ CREATE TABLE users (
     id INTEGER NOT NULL AUTO_INCREMENT, 
     PRIMARY KEY (id)
 );
+
+INSERT INTO users (`name`) VALUES ('kyle');
+INSERT INTO users (`name`) VALUES ('jay');
+INSERT INTO users (`name`) VALUES ('jill');
+INSERT INTO users (`name`) VALUES ('jessica');
+
+
 DROP TABLE if EXISTS played_games;
 CREATE TABLE played_games (
     date DATETIME DEFAULT NULL, 

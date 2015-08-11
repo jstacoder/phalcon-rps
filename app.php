@@ -104,7 +104,7 @@ $play = function() use ($app){
     //if(!$app->getDI()->getShared('session')->has('user_id')){
     //    return $app->response->redirect('start');
     //}
-    $user = Users::find(array('id'=>$app->getDI()->getShared('session')->user_id))->getFirst();
+    $user = Users::findFirstById($app->getDI()->getShared('session')->user_id);
     $app['view']->user = $user->name;
     echo $app['view']->render('play.volt');
 };

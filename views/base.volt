@@ -12,6 +12,7 @@
                 {% endblock %}
             </div>
             <div class="content row">
+                {{ flash }}
                 <div class=col-md-12>
                     {% block before_content %}
                     {% endblock %}

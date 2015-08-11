@@ -10,10 +10,21 @@ use Phalcon\Mvc\View\Engine\Volt as Engine;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
+use Phalcon\Flash\Direct as Flash;
 
 require __DIR__ . '/Database.php';
 
 $di = new FactoryDefault();
+
+$di->set('flash',function(){
+    $base = 'alert alert-';
+    return new Flash(array(
+        'error'=>$base.'danger',
+        'success'=>$base.'success',
+        'notice'=>$base.'info',
+        'warning'=>$base.'warning'
+    ));
+});
 
 $di->setShared('session',function() use ($config){
     $conn = new DbAdapter($config->database->toArray());

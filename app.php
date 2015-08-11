@@ -32,6 +32,14 @@ class PlayerForm extends Form {
     }
 }
 
+class AddForm extends Form {
+    public function __construct($entity=null,$attrs=null){
+        parent::__construct($entity,$attrs);
+        $name = new \Phalcon\Forms\Element\Text('name',array('class'=>'form-control'));
+        $this->add($name);
+    }
+}
+
 
 $get_quote = function($choice){
     $quotes = array(
@@ -83,6 +91,8 @@ $get_winner = function($choice_a,$choice_b) use ($get_winner_func){
 
 $start = function() use ($app){
     $app['view']->form = new PlayerForm();
+    $app['view']->addform = new AddForm();
+    $app['view']->flash = $app->getDI()->getShared('session')->flash;
 
     $meths = get_class_methods($app['view']->form->get('user'));
     $rtn = '';
@@ -182,6 +192,23 @@ $play_game = function($choice) use ($app,$get_comp_choice,$get_winner,$get_quote
     echo $app['view']->render('play-game-content.volt');
 };
 
+$add = function() use ($app){
+    $app->getDI()->getShared('session')->remove('flash');
+    $users = Users::find();
+    $name = $app->request->getPost()['name'];
+    foreach($users as $u){
+        if($u->name == $name){
+            $app->getDI()->getShared('session')->flash = $app->flash->error('That name is already picked, try again');
+            return $app->response->redirect('start');
+        }
+    }
+    $u = new Users();
+    $u->name = $name;
+    $u->save();
+    $app->getDI()->getShared('session')->flash = $app->flash->success('You added a new name');
+    return $app->response->redirect('start');
+};
+
 /**
  * Add your routes here
  */
@@ -193,6 +220,7 @@ $app->get('/', function () use ($app) {
 $app->get('/start',$start);
 $app->post('/pick',$pick);
 $app->get('/play',$play);
+$app->post('/add',$add);
 $app->get('/play/{choice}',$play_game);
 
 /**

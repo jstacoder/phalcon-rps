@@ -104,8 +104,14 @@ $play = function() use ($app){
     //if(!$app->getDI()->getShared('session')->has('user_id')){
     //    return $app->response->redirect('start');
     //}
-    $user = Users::findFirstById($app->getDI()->getShared('session')->user_id);
-    $app['view']->user = $user->name;
+    $users = Users::find();
+    $user_id = $app->getDI()->getShared('session')->user_id;
+    foreach($users as $u){
+        if($u->id == $user_id){
+            $user = $u->name;
+        }
+    }   
+    $app['view']->user = $user;
     echo $app['view']->render('play.volt');
 };
 $choices = array(

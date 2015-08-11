@@ -7,13 +7,19 @@ class Scores extends \Phalcon\Mvc\Model
      *
      * @var integer
      */
-    public $user_id;
+    public $wins;
 
     /**
      *
-     * @var string
+     * @var integer
      */
-    public $value;
+    public $losses;
+
+    /**
+     *
+     * @var integer
+     */
+    public $ties;
 
     /**
      *
@@ -32,9 +38,7 @@ class Scores extends \Phalcon\Mvc\Model
      */
     public function initialize()
     {
-        $this->belongsTo('user_id', 'Users', 'id', array('alias' => 'Users'));
         $this->belongsTo('played_game_id', 'PlayedGames', 'id', array('alias' => 'PlayedGames'));
-        $this->belongsTo('user_id', 'Users', 'id', array('foreignKey' => true));
         $this->belongsTo('played_game_id', 'Playedgames', 'id', array('foreignKey' => true));
     }
 
@@ -46,6 +50,10 @@ class Scores extends \Phalcon\Mvc\Model
     public function getSource()
     {
         return 'scores';
+    }
+
+    public function getPlayedGame(){
+        return PlayedGames::getById($this->played_game_id);
     }
 
     /**
@@ -79,8 +87,9 @@ class Scores extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'user_id' => 'user_id',
-            'value' => 'value',
+            'wins'=>'wins',
+            'losses'=>'losses',
+            'ties'=>'ties',
             'played_game_id' => 'played_game_id',
             'id' => 'id'
         );

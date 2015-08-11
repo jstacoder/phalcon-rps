@@ -28,3 +28,9 @@
             </div>
         {% endif %}
     {% endblock %}
+    {% block after_content %}
+        <form action="/save" method="post">
+            <button type=submit class="btn btn-primary">save</button>
+        </form>
+    {% endblock %}
+

@@ -16,6 +16,12 @@ class PlayedGames extends \Phalcon\Mvc\Model
     public $id;
 
     /**
+     *
+     * @var integer
+     */
+    public $user_id;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()
@@ -34,6 +40,15 @@ class PlayedGames extends \Phalcon\Mvc\Model
     public function getSource()
     {
         return 'played_games';
+    }
+    public static function getById($id){
+        $rtn = null;
+        foreach(parent::find() as $g){
+            if($g->id == $id){
+                return $g;
+            }
+        }
+        return $rtn;
     }
 
     /**
@@ -57,6 +72,10 @@ class PlayedGames extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
+    public function save($data=null,$whiteList=null){
+        $this->date = date("Y-m-d H:i:s");
+        parent::save($data,$whiteList);
+    }
 
     /**
      * Independent Column Mapping.
@@ -67,6 +86,7 @@ class PlayedGames extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
+            'user_id'=>'user_id',
             'date' => 'date',
             'id' => 'id'
         );

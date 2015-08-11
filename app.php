@@ -209,6 +209,24 @@ $add = function() use ($app){
     return $app->response->redirect('start');
 };
 
+$save = function() use ($app){
+    $user_id = $app->getDI()->getShared('session')->user_id;
+    $wins = $app->getDI()->getShared('session')->wins;
+    $losses = $app->getDI()->getShared('session')->losses;
+    $ties = $app->getDI()->getShared('session')->ties;
+
+    $game = new PlayedGames();
+    $game->user_id = $user_id;
+    $game->save();
+    $score = new Scores();
+    $score->wins = $wins;
+    $score->losses = $losses;
+    $score->ties = $ties;
+    $score->played_game_id = $game->id;
+    $score->save();
+    return $app->response->redirect('/');
+};
+
 /**
  * Add your routes here
  */
@@ -222,6 +240,7 @@ $app->post('/pick',$pick);
 $app->get('/play',$play);
 $app->post('/add',$add);
 $app->get('/play/{choice}',$play_game);
+$app->post('/save',$save);
 
 /**
  * Not found handler

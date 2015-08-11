@@ -15,7 +15,7 @@ require __DIR__ . '/Database.php';
 
 $di = new FactoryDefault();
 
-$di->set('session',function() use ($config){
+$di->setShared('session',function() use ($config){
     $conn = new DbAdapter($config->database->toArray());
     $session = new Database(array(
         'db'=>$conn,

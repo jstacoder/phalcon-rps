@@ -32,6 +32,7 @@ class PlayerForm extends Form {
     }
 }
 
+
 $get_quote = function($choice){
     $quotes = array(
         'rock'=>'rock smashes scissors',
@@ -92,7 +93,25 @@ $start = function() use ($app){
     echo $app['view']->render('start.volt');
 };
 
-$pick = function() use ($app){
+
+$reset_game = function() use($app){
+    $sess = $app->getDI()->get('session');
+    $sess->wins = 0;
+    $sess->losses = 0;
+    $sess->ties = 0;
+};
+$add_win = function() use ($app){
+    $app->getDI()->getShared('session')->wins = $app->getDI()->getShared('session')->wins + 1;
+};
+$add_loss = function() use ($app){
+    $app->getDI()->getShared('session')->losses = $app->getDI()->getShared('session')->losses + 1;
+};
+$add_tie = function() use ($app){
+    $app->getDI()->getShared('session')->ties = $app->getDI()->getShared('session')->ties + 1;
+};
+
+$pick = function() use ($app,$reset_game){
+    $reset_game();
     $user_id = $app->request->getPost()['user'];
     $app->getDI()->get('session')->set('user_id',(int)$user_id);
     return $app->response->redirect('play');
@@ -108,7 +127,6 @@ $play = function() use ($app){
     $user_id = $app->getDI()->get('session')->user_id;
     echo "ID: ".$user_id."<br/>";
     foreach($users->toArray() as $u){
-        print_r($u);
         if($u['id'] == $user_id){
             $user = $u['name'];
         }
@@ -125,16 +143,32 @@ $get_comp_choice = function() use ($choices){
     return $choices[array_rand($choices)];
 };
 
-$play_game = function($choice) use ($app,$get_comp_choice,$get_winner,$get_quote){
+$play_game = function($choice) use ($app,$get_comp_choice,$get_winner,$get_quote,$add_win,$add_loss,$add_tie){
     $choice_b = $get_comp_choice();
     $result = $get_winner($choice,$choice_b);
     if($result=='lose'){
         $quote = $get_quote($choice_b);
+        $add_loss();
+        $app['view']->added = 'loss';
+        $app['view']->bg = 'danger';
     }elseif($result=='win'){
         $quote = $get_quote($choice);
+        $app->getDI()->getShared('session')->wins++;
+        $app['view']->added = 'win';
+        $app['view']->bg = 'success';
+        //$add_win();
     }else{
         $quote = 'Tie Game';
+        $add_tie();
+        $app['view']->added = 'tie';
+        $app['view']->bg = 'warning';
     }
+    $app['view']->winpanel = 'primary';
+    $app['view']->losepanel = 'danger';
+    $app['view']->tiepanel = 'warning';
+    $app['view']->wins = $app->getDI()->getShared('session')->wins;
+    $app['view']->losses = $app->getDI()->getShared('session')->losses;
+    $app['view']->ties = $app->getDI()->getShared('session')->ties;
     $app['view']->user_choice = $choice;
     $app['view']->comp_choice = $choice_b;
     $app['view']->result = $result;
@@ -145,6 +179,7 @@ $play_game = function($choice) use ($app,$get_comp_choice,$get_winner,$get_quote
 /**
  * Add your routes here
  */
+
 $app->get('/', function () use ($app) {
     echo $app['view']->render('index.volt');
 });

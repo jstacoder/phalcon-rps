@@ -93,9 +93,8 @@ $start = function() use ($app){
 };
 
 $pick = function() use ($app){
-    $user_id = $app->request->getPost('user');
-    $user = Users::find(array('id'=>$user_id));
-    $app->getDI()->get('session')->set('user_id',$user_id);
+    $user_id = $app->request->getPost()['user'];
+    $app->getDI()->get('session')->set('user_id',(int)$user_id);
     return $app->response->redirect('play');
 };
 

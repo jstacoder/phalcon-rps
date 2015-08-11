@@ -11,7 +11,19 @@ use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Db\Adapter\Pdo\Mysql as DbAdapter;
 
+require __DIR__ . '/Database.php';
+
 $di = new FactoryDefault();
+
+$di->set('session',function() use ($config){
+    $conn = new DbAdapter($config->database->toArray());
+    $session = new Database(array(
+        'db'=>$conn,
+        'table'=>'session_data'
+    ));
+    $session->start();
+    return $session;
+});
 
 /**
  * Sets the view component

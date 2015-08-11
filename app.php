@@ -104,11 +104,12 @@ $play = function() use ($app){
     //if(!$app->getDI()->getShared('session')->has('user_id')){
     //    return $app->response->redirect('start');
     //}
+    $user = 'None';
     $users = Users::find();
     $user_id = $app->getDI()->getShared('session')->user_id;
-    foreach($users as $u){
-        if($u->id == $user_id){
-            $user = $u->name;
+    foreach($users->toArray() as $u){
+        if($u['id'] == $user_id){
+            $user = $u['name'];
         }
     }   
     $app['view']->user = $user;

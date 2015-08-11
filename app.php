@@ -108,6 +108,7 @@ $play = function() use ($app){
     $users = Users::find();
     $user_id = $app->getDI()->getShared('session')->user_id;
     foreach($users->toArray() as $u){
+        print_r($u);
         if($u['id'] == $user_id){
             $user = $u['name'];
         }

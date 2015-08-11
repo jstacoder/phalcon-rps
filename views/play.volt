@@ -1,4 +1,4 @@
-{% extends 'base.volt' %}
+{% extends 'play-game.volt' %}
 
     {% block content %}
         {% if user %}

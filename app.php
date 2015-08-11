@@ -132,6 +132,12 @@ $play = function() use ($app){
         }
     }   
     $app['view']->user = $user;
+    $app['view']->wins = $app->getDI()->getShared('session')->wins;
+    $app['view']->losses = $app->getDI()->getShared('session')->losses;
+    $app['view']->ties = $app->getDI()->getShared('session')->ties;
+    $app['view']->winpanel = 'primary';
+    $app['view']->losepanel = 'danger';
+    $app['view']->tiepanel = 'warning';
     echo $app['view']->render('play.volt');
 };
 $choices = array(
@@ -173,7 +179,7 @@ $play_game = function($choice) use ($app,$get_comp_choice,$get_winner,$get_quote
     $app['view']->comp_choice = $choice_b;
     $app['view']->result = $result;
     $app['view']->quote = $quote;
-    echo $app['view']->render('play-game.volt');
+    echo $app['view']->render('play-game-content.volt');
 };
 
 /**

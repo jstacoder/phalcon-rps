@@ -1,6 +1,6 @@
 {% extends 'base.volt' %}
 
-{% block content %}
+{% block before_content %}
     <div class="panel panel-default">
         <div class="panel-body text-center">
             <div class=row>
@@ -37,13 +37,4 @@
             </div>
         </div>
     </div>
-    <h3>You picked {{ user_choice }}</h3>
-    <h3>The Computer picked {{ comp_choice }}</h3>
-    <h2 class=lead>Result:  <small>You {{ result }}</small></h2>
-        <div class="panel panel-default">
-        <div class="text-center panel-body bg-{{ bg }}">
-        <h3>{{ quote }}</h3>
-        </div>
-        </div>
-    <a href="/play" class="btn btn-success">play again</a>
 {% endblock %}

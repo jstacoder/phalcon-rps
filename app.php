@@ -42,51 +42,53 @@ class AddForm extends Form {
 
 
 $get_quote = function($choice){
-    $quotes = array(
+    return array(
         'rock'=>'rock smashes scissors',
         'paper'=>'paper covers rock',
         'scissors'=>'scissors cuts paper'
-    );
-    return $quotes[$choice];
+    )[$choice];
 };
 
 $get_rock_winner = function($choice){
-    $results = array(
+    return array(
         'rock'=>'tie',
         'paper'=>'lose',
         'scissors'=>'win'
-    );
-    return $results[$choice];
+    )[$choice];
 };
 $get_paper_winner = function($choice){
-    $results = array(
+    return array(
         'rock'=>'win',
         'paper'=>'tie',
         'scissors'=>'lose'
-    );
-    return $results[$choice];
+    )[$choice];
 };
 $get_scissors_winner = function($choice){
-    $results = array(
+    return array(
         'rock'=>'lose',
         'paper'=>'win',
         'scissors'=>'tie'
-    );
-    return $results[$choice];
+    )[$choice];
 };
 $get_winner_func = function($choice) use ($get_rock_winner,$get_paper_winner,$get_scissors_winner){
-    $funcs = array(
+    return array(
         'rock'=>$get_rock_winner,
         'paper'=>$get_paper_winner,
         'scissors'=>$get_scissors_winner
-    );
-    return $funcs[$choice];
+    )[$choice];
+};
+$get_winner = function($choice_a,$choice_b) use ($get_winner_func){
+    return call_user_func($get_winner_func($choice_a),$choice_b);
+};
+$choices = array(
+    'rock',
+    'paper',
+    'scissors'
+);
+$get_comp_choice = function() use ($choices){
+    return $choices[array_rand($choices)];
 };
 
-$get_winner = function($choice_a,$choice_b) use ($get_winner_func){
-    $func = $get_winner_func($choice_a);
-    return $func($choice_b);
-};
 
 
 $start = function() use ($app){
@@ -150,15 +152,6 @@ $play = function() use ($app){
     $app['view']->tiepanel = 'warning';
     echo $app['view']->render('play.volt');
 };
-$choices = array(
-    'rock',
-    'paper',
-    'scissors'
-);
-$get_comp_choice = function() use ($choices){
-    return $choices[array_rand($choices)];
-};
-
 $play_game = function($choice) use ($app,$get_comp_choice,$get_winner,$get_quote,$add_win,$add_loss,$add_tie){
     $choice_b = $get_comp_choice();
     $result = $get_winner($choice,$choice_b);
@@ -210,10 +203,11 @@ $add = function() use ($app){
 };
 
 $save = function() use ($app){
-    $user_id = $app->getDI()->getShared('session')->user_id;
-    $wins = $app->getDI()->getShared('session')->wins;
-    $losses = $app->getDI()->getShared('session')->losses;
-    $ties = $app->getDI()->getShared('session')->ties;
+    $post = $app->request->getPost();
+    $user_id = $post->user_id;
+    $wins = $post->wins;
+    $losses = $post->losses;
+    $ties = $post->ties;
 
     $game = new PlayedGames();
     $game->user_id = $user_id;
@@ -224,7 +218,13 @@ $save = function() use ($app){
     $score->ties = $ties;
     $score->played_game_id = $game->id;
     $score->save();
-    return $app->response->redirect('/');
+    $app->getDI()->getShared('session')->score = $score;
+    return $app->response->redirect('save_page');
+};
+
+$save_page = function() use ($app) {
+    $app['view']->score = $app->getDI()->getShared('session')->score;
+    echo $app['view']->render('save.volt');
 };
 
 /**
@@ -241,6 +241,7 @@ $app->get('/play',$play);
 $app->post('/add',$add);
 $app->get('/play/{choice}',$play_game);
 $app->post('/save',$save);
+$app->get('/save_page',$save_page);
 
 /**
  * Not found handler

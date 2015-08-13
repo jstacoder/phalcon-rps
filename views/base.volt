@@ -23,6 +23,10 @@
                     {% block after_content %}
                     {% endblock %}
                 </div>
+                <div class=col-md-12>
+                    {% block large_lower %}
+                    {% endblock %}
+                </div>
             </div>
             <div class="footer row">
                 <div class=col-md-3>

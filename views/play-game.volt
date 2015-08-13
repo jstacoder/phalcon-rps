@@ -1,5 +1,7 @@
 {% extends 'base.volt' %}
-
+{% block body_tag %}
+ style="font-size:2em;" 
+{% endblock %}
 {% block before_content %}
     <div class="panel panel-default">
         <div class="panel-body text-center">

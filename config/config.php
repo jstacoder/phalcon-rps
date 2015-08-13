@@ -4,16 +4,18 @@ defined('APP_PATH') || define('APP_PATH', realpath('.'));
 
 function get_data_array($url){
     $result = array(
-        'adapter'=>'Mysql',
         'charset'=>'utf8'
     );
-    $url = explode('mysql://',$url)[1];
+    $adapter = explode('://',$url)[0];
+    $url = explode("$adapter://",$url)[1];
+    $adapter = ucfirst($adapter);
     $auth = explode('@',$url)[0];
     $hst = explode('@',$url)[1];
     $host = explode('/',$hst)[0];
     $db = explode('/',$hst)[1];
     $db = explode('?',$db)[0];
     $_auth = explode(':',$auth);
+    $result['adapter'] = $adapter;
     $result['username'] = $_auth[0];
     $result['password'] = $_auth[1];
     $result['host'] = $host;

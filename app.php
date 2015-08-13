@@ -218,12 +218,18 @@ $save = function() use ($app){
     $score->ties = $ties;
     $score->played_game_id = $game->id;
     $score->save();
-    $app->getDI()->getShared('session')->score = $score;
+    $app->getDI()->getShared('session')->wins = $score->wins;
+    $app->getDI()->getShared('session')->losses = $score->losses;
+    $app->getDI()->getShared('session')->ties = $score->ties;
     return $app->response->redirect('save_page');
 };
 
 $save_page = function() use ($app) {
-    $app['view']->score = $app->getDI()->getShared('session')->score;
+    $app['view']->score = json_encode(json_decode(array(
+        'wins'=>$app->getDI()->getShared('session')->wins,
+        'losses'=>$app->getDI()->getShared('session')->losses,
+        'ties'=>$app->getDI()->getShared('session')->ties
+    )));
     echo $app['view']->render('save.volt');
 };
 

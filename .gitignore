@@ -1,3 +1,4 @@
 app/cache/*
 public/vendor/*
 app/config/config.php
+views/*.php

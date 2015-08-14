@@ -52,8 +52,23 @@ class Scores extends \Phalcon\Mvc\Model
         return 'scores';
     }
 
+    private function _make_two_digits($val){
+        if(strlen($val)==2){
+            return $val;
+        }
+        return strlen($val) == 1 ? "0$val" : false;
+    }
+
     public function getPlayedGame(){
         return PlayedGames::getById($this->played_game_id);
+    }
+    public function getDate(){
+        $dte = $this->getPlayedGame()->date;
+        $dte = explode(' ',$dte)[0];    
+        list($y,$m,$d) = explode('-',$dte);        
+        $m = $this->_make_two_digits($m);
+        $d = $this->_make_two_digits($d);
+        return "$m-$d-$y";
     }
 
     /**

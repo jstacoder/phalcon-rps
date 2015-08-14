@@ -26,6 +26,36 @@ class Users extends \Phalcon\Mvc\Model
         $this->hasMany('id', 'Scores', 'user_id', NULL);
     }
 
+    public static function _getGames($id){
+        $res = array();
+        foreach(PlayedGames::find() as $g){
+            if($g->users_id==$id){
+                $res[] = $g;
+            }
+        }
+        return $res;
+    }
+
+    public static function _getScores($id){
+        $res = array();
+        foreach(static::_getGames($id) as $g){
+            foreach(Scores::find() as $s){
+                if($s->played_game_id==$g->id){
+                    $res[] = $s;
+                }
+            }
+        }
+        return $res;
+    }
+
+    public function getGames(){
+        return static::_getGames($this->id);
+    }
+
+    public function getScores(){
+        return static::_getScores($this->id);
+    }
+
     /**
      * Returns table name mapped in the model.
      *

@@ -5,6 +5,12 @@ class PlayedGames extends \Phalcon\Mvc\Model
 
     /**
      *
+     * @var integer
+     */
+    public $users_id;
+
+    /**
+     *
      * @var string
      */
     public $date;
@@ -16,31 +22,15 @@ class PlayedGames extends \Phalcon\Mvc\Model
     public $id;
 
     /**
-     *
-     * @var integer
-     */
-    public $user_id;
-
-    /**
      * Initialize method for model.
      */
     public function initialize()
     {
-        $this->hasMany('id', 'PlayedGamesUsers', 'played_games_id', array('alias' => 'PlayedGamesUsers'));
         $this->hasMany('id', 'Scores', 'played_game_id', array('alias' => 'Scores'));
-        $this->hasMany('id', 'PlayedGamesUsers', 'played_games_id', NULL);
-        $this->hasMany('id', 'Scores', 'played_game_id', NULL);
+        $this->belongsTo('users_id', 'Users', 'id', array('alias' => 'Users'));
     }
 
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource()
-    {
-        return 'played_games';
-    }
+
     public static function getById($id){
         $rtn = null;
         foreach(parent::find() as $g){
@@ -49,6 +39,26 @@ class PlayedGames extends \Phalcon\Mvc\Model
             }
         }
         return $rtn;
+    }
+
+    public function getUser(){
+        $users = Users::find();
+        foreach($users as $u){
+            if((int)$u->id===(int)$this->users_id){
+                return $u;
+            }
+        }
+        return false;
+    }
+    public function getScores(){
+        $scores = Scores::find();
+        $results = array();
+        foreach($scores as $s){
+            if($s->played_game_id==$this->id){
+                $results[] = $s;
+            }
+        }
+        return !empty($results) ? $results : false;
     }
 
     /**
@@ -72,6 +82,8 @@ class PlayedGames extends \Phalcon\Mvc\Model
     {
         return parent::findFirst($parameters);
     }
+
+
     public function save($data=null,$whiteList=null){
         $this->date = date("Y-m-d H:i:s");
         parent::save($data,$whiteList);
@@ -86,10 +98,20 @@ class PlayedGames extends \Phalcon\Mvc\Model
     public function columnMap()
     {
         return array(
-            'user_id'=>'user_id',
+            'users_id'=>'users_id',
             'date' => 'date',
             'id' => 'id'
         );
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource()
+    {
+        return 'played_games';
     }
 
 }

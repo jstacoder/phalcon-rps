@@ -137,12 +137,13 @@ $play = function() use ($app){
     $user = 'None';
     $users = Users::find();
     $user_id = $app->getDI()->get('session')->user_id;
-    echo "ID: ".$user_id."<br/>";
+    //echo "ID: ".$user_id."<br/>";
     foreach($users->toArray() as $u){
         if($u['id'] == $user_id){
             $user = $u['name'];
         }
     }   
+    $app->getDI()->get('session')->user_name = $user;
     $app['view']->user = $user;
     $app['view']->user_id = $user_id;
     $app['view']->wins = $app->getDI()->getShared('session')->wins;
@@ -224,6 +225,7 @@ $save = function() use ($app){
 };
 
 $save_page = function() use ($app) {
+    $app['view']->user = $app->getDI()->get('session')->user_name;
     //$app['view']->score = array_filter(function($x) use ($app){ return $x->id === $app->getDI()->getShared('session')->get('score'); },Scores::find());
     $scores = Scores::find();
     foreach($scores as $s){
@@ -241,6 +243,21 @@ $save_page = function() use ($app) {
     echo $app['view']->render('save.volt');
 };
 
+$score_page = function($user_id) use ($app) {
+    $users = Users::find();
+    $found = false;
+    foreach($users as $u){
+        if($u->id==$user_id){
+            $app['view']->scores = array_map(function($x){ return array_merge($x->toArray(),array('date'=>$x->getDate()));},$u->getScores());
+            $found = true;
+        }
+    }
+    if(!$found){
+       $app['view']->scores = 'No User By That Id';
+    }
+    echo $app['view']->render('score_page.volt');
+};
+
 /**
  * Add your routes here
  */
@@ -256,6 +273,7 @@ $app->post('/add',$add);
 $app->get('/play/{choice}',$play_game);
 $app->post('/save',$save);
 $app->get('/save_page',$save_page);
+$app->get('/scores/{user_id}',$score_page);
 
 /**
  * Not found handler

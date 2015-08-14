@@ -144,6 +144,7 @@ $play = function() use ($app){
         }
     }   
     $app['view']->user = $user;
+    $app['view']->user_id = $user_id;
     $app['view']->wins = $app->getDI()->getShared('session')->wins;
     $app['view']->losses = $app->getDI()->getShared('session')->losses;
     $app['view']->ties = $app->getDI()->getShared('session')->ties;
@@ -203,7 +204,7 @@ $add = function() use ($app){
 };
 
 $save = function() use ($app){
-    $post = $app->request->getPost();
+    $post = json_decode(json_encode($app->request->getPost()));
     $user_id = $post->user_id;
     $wins = $post->wins;
     $losses = $post->losses;
@@ -218,18 +219,25 @@ $save = function() use ($app){
     $score->ties = $ties;
     $score->played_game_id = $game->id;
     $score->save();
-    $app->getDI()->getShared('session')->wins = $score->wins;
-    $app->getDI()->getShared('session')->losses = $score->losses;
-    $app->getDI()->getShared('session')->ties = $score->ties;
+    $app->getDI()->getShared('session')->set('score',$score->id);
     return $app->response->redirect('save_page');
 };
 
 $save_page = function() use ($app) {
-    $app['view']->score = json_encode(json_decode(array(
-        'wins'=>$app->getDI()->getShared('session')->wins,
-        'losses'=>$app->getDI()->getShared('session')->losses,
-        'ties'=>$app->getDI()->getShared('session')->ties
-    )));
+    //$app['view']->score = array_filter(function($x) use ($app){ return $x->id === $app->getDI()->getShared('session')->get('score'); },Scores::find());
+    $scores = Scores::find();
+    foreach($scores as $s){
+        echo '<pre>';
+        print_r(json_encode($s));
+        echo '</pre>';
+        if((int)$s->id===(int)$app->getDI()->getShared('session')->get('score')){
+            $app['view']->score = $s;//json_encode($s);
+            $app['view']->wins = $s->wins;//json_encode($s);
+            $app['view']->losses = $s->losses;//json_encode($s);
+            $app['view']->ties = $s->ties;//json_encode($s);
+        }
+    }
+    //echo (int)$app->getDI()->getShared('session')->get('score');
     echo $app['view']->render('save.volt');
 };
 

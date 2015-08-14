@@ -2,9 +2,9 @@
 
     {% block content %}
         <div>
-            <p>Wins: {{ score.wins }}</p>
-            <p>Losses: {{ score.losses }}</p>
-            <p>Ties: {{ score.ties }}</p>
+            <p>Wins: {{ wins }}</p>
+            <p>Losses: {{ losses }}</p>
+            <p>Ties: {{ ties }}</p>
         </div>
-        <button class="btn btn-primary btn-lg">play again</button>
+        <button href="/start" class="btn btn-primary btn-lg">play again</button>
     {% endblock %}

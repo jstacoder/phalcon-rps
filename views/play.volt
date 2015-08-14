@@ -30,6 +30,10 @@
     {% endblock %}
     {% block after_content %}
         <form action="/save" method="post">
+            <input type="hidden" value="{{ wins }}" name=wins />
+            <input type="hidden" value="{{ losses }}" name=losses />
+            <input type="hidden" value="{{ ties }}" name=ties />
+            <input type="hidden" value="{{ user_id }}" name=user_id />
             <button type=submit class="btn btn-primary">save</button>
         </form>
     {% endblock %}

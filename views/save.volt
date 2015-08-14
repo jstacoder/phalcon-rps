@@ -2,6 +2,7 @@
 
     {% block content %}
         <div>
+            <p class=lead>{{ user }}</p>
             <p>Wins: {{ wins }}</p>
             <p>Losses: {{ losses }}</p>
             <p>Ties: {{ ties }}</p>

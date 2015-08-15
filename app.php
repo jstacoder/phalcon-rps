@@ -243,12 +243,40 @@ $save_page = function() use ($app) {
     echo $app['view']->render('save.volt');
 };
 
-$score_page = function($user_id) use ($app) {
+$get_score_result = function($score){
+    $max = 0;
+    $res = false;
+    foreach(array('wins','losses','ties') as $t){
+        if($score->{$t}>$max){
+            $max = $score->{$t};
+            $res = $t;
+        }
+    }
+    return $res;
+};
+
+$score_page = function($user_id) use ($app,$get_score_result) {
     $users = Users::find();
     $found = false;
     foreach($users as $u){
         if($u->id==$user_id){
-            $app['view']->scores = array_map(function($x){ return array_merge($x->toArray(),array('date'=>$x->getDate()));},$u->getScores());
+            $app['view']->scores = array_map(
+                                        function($x) use ($get_score_result){ 
+                                            return array_merge(
+                                                        $x->toArray(),
+                                                        array(
+                                                            'date' => $x->getDate(),
+                                                            'highlight' => $get_score_result(
+                                                                                json_decode(
+                                                                                        json_encode(
+                                                                                            $x->toArray()
+                                                                                        )
+                                                                                )
+                                                            )
+                                                        )
+                                            );
+                                        },$u->getScores()
+            );
             $found = true;
         }
     }

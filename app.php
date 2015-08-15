@@ -260,6 +260,7 @@ $score_page = function($user_id) use ($app,$get_score_result) {
     $found = false;
     foreach($users as $u){
         if($u->id==$user_id){
+            $app['view']->user = $u->name;
             $app['view']->scores = array_map(
                                         function($x) use ($get_score_result){ 
                                             return array_merge(

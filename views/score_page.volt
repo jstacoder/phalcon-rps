@@ -28,7 +28,7 @@
         </ul>
     </div>
 {% endmacro %}
-        {{ scores }}
+        <h3 class=page-header>{{ user }}</h3>
         <div class=col-md-12>
             <div class=row>
         {% for s in scores %}

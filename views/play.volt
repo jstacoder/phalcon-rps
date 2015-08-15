@@ -36,5 +36,6 @@
             <input type="hidden" value="{{ user_id }}" name=user_id />
             <button type=submit class="btn btn-primary">save</button>
         </form>
+        <a class="btn btn-default" href="/scores/{{ user_id }}">view Scores</a>
     {% endblock %}
 

@@ -71,6 +71,10 @@ class Scores extends \Phalcon\Mvc\Model
         return "$m-$d-$y";
     }
 
+    public function getUser(){
+        return Users::getById($this->getPlayedGame()->users_id);
+    }
+
     /**
      * Allows to query a set of records that match the specified conditions
      *

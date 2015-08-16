@@ -48,6 +48,15 @@ class Users extends \Phalcon\Mvc\Model
         return $res;
     }
 
+    public static function getById($id){
+        foreach(Users::find() as $u){
+            if($u->id==$id){
+                return $u;
+            }
+        }
+        return false;
+    }
+
     public function getGames(){
         return static::_getGames($this->id);
     }
